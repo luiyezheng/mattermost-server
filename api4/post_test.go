@@ -1320,6 +1320,11 @@ func TestSearchPosts(t *testing.T) {
 	_, resp = Client.SearchPosts(th.BasicTeam.Id, "#sgtitlereview", false)
 	CheckUnauthorizedStatus(t, resp)
 
+	posts, resp = Client.SearchPostsWithMatches(th.BasicTeam.Id, "post2", false)
+	CheckNoError(t, resp)
+	if len(posts.Order) != 1 && posts.Order[0] == post2.Id {
+		t.Fatal("wrong search")
+	}
 }
 
 func TestSearchHashtagPosts(t *testing.T) {

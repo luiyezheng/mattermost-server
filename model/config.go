@@ -460,14 +460,17 @@ func (s *ServiceSettings) SetDefaults() {
 }
 
 type ClusterSettings struct {
-	Enable                *bool
-	ClusterName           *string
-	OverrideHostname      *string
-	UseIpAddress          *bool
-	UseExperimentalGossip *bool
-	ReadOnlyConfig        *bool
-	GossipPort            *int
-	StreamingPort         *int
+	Enable                      *bool
+	ClusterName                 *string
+	OverrideHostname            *string
+	UseIpAddress                *bool
+	UseExperimentalGossip       *bool
+	ReadOnlyConfig              *bool
+	GossipPort                  *int
+	StreamingPort               *int
+	MaxIdleConns                *int
+	MaxIdleConnsPerHost         *int
+	IdleConnTimeoutMilliseconds *int
 }
 
 func (s *ClusterSettings) SetDefaults() {
@@ -501,6 +504,18 @@ func (s *ClusterSettings) SetDefaults() {
 
 	if s.StreamingPort == nil {
 		s.StreamingPort = NewInt(8075)
+	}
+
+	if s.MaxIdleConns == nil {
+		s.MaxIdleConns = NewInt(100)
+	}
+
+	if s.MaxIdleConnsPerHost == nil {
+		s.MaxIdleConnsPerHost = NewInt(128)
+	}
+
+	if s.IdleConnTimeoutMilliseconds == nil {
+		s.IdleConnTimeoutMilliseconds = NewInt(90000)
 	}
 }
 
@@ -739,6 +754,7 @@ type EmailSettings struct {
 	EnableEmailBatching               *bool
 	EmailBatchingBufferSize           *int
 	EmailBatchingInterval             *int
+	EnablePreviewModeBanner           *bool
 	SkipServerCertificateVerification *bool
 	EmailNotificationContentsType     *string
 	LoginButtonColor                  *string
@@ -789,6 +805,10 @@ func (s *EmailSettings) SetDefaults() {
 
 	if s.EmailBatchingInterval == nil {
 		s.EmailBatchingInterval = NewInt(EMAIL_BATCHING_INTERVAL)
+	}
+
+	if s.EnablePreviewModeBanner == nil {
+		s.EnablePreviewModeBanner = NewBool(true)
 	}
 
 	if s.EnableSMTPAuth == nil {
@@ -1002,6 +1022,7 @@ type TeamSettings struct {
 	EnableConfirmNotificationsToChannel *bool
 	TeammateNameDisplay                 *string
 	ExperimentalEnableAutomaticReplies  *bool
+	ExperimentalHideTownSquareinLHS     *bool
 	ExperimentalTownSquareIsReadOnly    *bool
 	ExperimentalPrimaryTeam             *string
 }
@@ -1098,6 +1119,10 @@ func (s *TeamSettings) SetDefaults() {
 
 	if s.ExperimentalEnableAutomaticReplies == nil {
 		s.ExperimentalEnableAutomaticReplies = NewBool(false)
+	}
+
+	if s.ExperimentalHideTownSquareinLHS == nil {
+		s.ExperimentalHideTownSquareinLHS = NewBool(false)
 	}
 
 	if s.ExperimentalTownSquareIsReadOnly == nil {
